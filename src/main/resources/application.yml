@@ -1,0 +1,8 @@
+SERVER:
+  PORT: 3000
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/customerdb
+    username: customeruser
+    password: customerpass
