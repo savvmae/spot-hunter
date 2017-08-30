@@ -3,11 +3,13 @@ package com.project.spothunter.service;
 import com.project.spothunter.model.Spot;
 import com.project.spothunter.repository.SpotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public class SpotServiceImpl implements SpotService{
+@Service
+public class SpotServiceImpl implements SpotService {
     @Autowired
     SpotRepository spotRepository;
 

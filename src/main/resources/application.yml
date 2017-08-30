@@ -3,6 +3,6 @@ SERVER:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/customerdb
-    username: customeruser
-    password: customerpass
+    url: jdbc:postgresql://localhost:5432/spotdb
+    username: spotuser
+    password: spotpasss
