@@ -1,4 +1,7 @@
 package com.project.spothunter.repository;
 
-public interface SpotRepository {
+import com.project.spothunter.model.Spot;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface SpotRepository extends JpaRepository<Spot, Integer>{
 }
