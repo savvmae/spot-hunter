@@ -1,0 +1,53 @@
+{
+  "name": "react-gmaps",
+  "version": "1.0.0",
+  "description": "A react component for a google map!",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node_modules/.bin/webpack-dev-server --output-public-path=/public/",
+    "build": "node_modules/.bin/webpack -p",
+    "test": "mocha test/Gmap.test.js --opts test/mocha.opts"
+  },
+  "repository": {
+
+  },
+  "keywords": [
+    "react",
+    "google",
+    "maps"
+  ],
+  "author": "Daniel Andrews",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.16.2",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "immutability-helper": "^2.3.1",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-load-script": "0.0.4",
+    "react-materialize": "^1.0.10",
+    "react-modal": "^2.2.4",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0",
+    "webpack": "^2.6.0"
+  },
+  "devDependencies": {
+    "babel-register": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "chai": "^4.0.2",
+    "enzyme": "^2.8.2",
+    "jsdom": "^11.0.0",
+    "mocha": "^3.4.2",
+    "react-test-renderer": "^15.5.4",
+    "webpack-dev-server": "^2.4.5",
+    "webpack-dotenv-plugin": "^2.0.0"
+  }
+}
