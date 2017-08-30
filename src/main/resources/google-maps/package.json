@@ -4,13 +4,11 @@
   "description": "A react component for a google map!",
   "main": "index.js",
   "scripts": {
-    "dev": "node_modules/.bin/webpack-dev-server --output-public-path=/public/",
+    "dev": "node_modules/.bin/webpack-dev-server --output-public-path=/public",
     "build": "node_modules/.bin/webpack -p",
     "test": "mocha test/Gmap.test.js --opts test/mocha.opts"
   },
-  "repository": {
-
-  },
+  "repository": {},
   "keywords": [
     "react",
     "google",
