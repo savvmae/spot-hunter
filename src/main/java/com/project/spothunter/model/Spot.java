@@ -1,5 +1,9 @@
 package com.project.spothunter.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "spots")
 public class Spot {
 
     private int id;
@@ -8,11 +12,13 @@ public class Spot {
     private String comments;
     private String type;
     private Boolean taken;
-    private int userID;
+    private int userId;
 
     public Spot() {
     }
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -20,6 +26,7 @@ public class Spot {
     public void setId(int id) {
         this.id = id;
     }
+
 
     public String getLatitude() {
         return latitude;
@@ -61,12 +68,12 @@ public class Spot {
         this.taken = taken;
     }
 
-    public int getUserID() {
-        return userID;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     @Override
