@@ -14,7 +14,7 @@
     "google",
     "maps"
   ],
-  "author": "Daniel Andrews",
+  "author": "Savannah Cosby",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.16.2",
