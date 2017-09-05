@@ -19,7 +19,9 @@ if N ---
 
 need to separate out my services and reducers and actions
 
-need to get info stored on spots to render in info boxes
+remove marker - to fire if user clicks "no" or if x is clicked in detail modal
+may want to consider refactoring the marker render so that marker is a component. probably would be much easier, but would take a lot of time.
+
 
 
 

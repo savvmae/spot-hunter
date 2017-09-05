@@ -16,6 +16,11 @@ class MarkerModal extends Component {
     handleToggleDetailModal = () => {
         this.props.toggleMarkerDetailModal()
     }
+    handleToggleMarkerModal = (event) => {
+        this.props.toggleMarkerModal()
+        console.log(this.props)
+        // this.props.removeMarker()
+    }
 
 
     render() {
@@ -28,7 +33,7 @@ class MarkerModal extends Component {
                     <div className="row">
                         <button className="btn waves-effect waves-light z-zero" onClick={this.handleToggleDetailModal}>Yes</button>
                     </div><div className="row">
-                        <button className="btn waves-effect waves-light z-zero" onClick={this.props.toggleMarkerModal}>No</button></div>
+                        <button className="btn waves-effect waves-light z-zero" onClick={this.handleToggleMarkerModal}>No</button></div>
                 </ReactModal>
                 {this.props.state.showMarkerDetailModal
 
