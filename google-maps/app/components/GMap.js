@@ -6,6 +6,7 @@ import MapStyles from './MapStyles';
 import Script from 'react-load-script';
 import PropTypes from 'prop-types';
 import SearchBar from './SearchBar';
+import MarkerModal from './MarkerModal';
 
 import { loading, searchCity, toggleMarkerModal } from '../actions';
 
@@ -15,7 +16,8 @@ class GMap extends React.Component {
         this.state = {
             center: null,
             searchCity: '',
-            hasLoaded: true
+            hasLoaded: true,
+            markers: []
         };
         this.mapCenter.bind(this);
     }
@@ -66,9 +68,6 @@ class GMap extends React.Component {
             let position = { lat: this.state.lat, lng: this.state.lng }
             this.props.toggleMarkerModal(position)
             this.newMarker(position)
-            
-                // this.props.toggleMarkerModal()
-            // this.newMarker(position)
         })
         return map
     }
@@ -163,7 +162,7 @@ class GMap extends React.Component {
             animation: google.maps.Animation.DROP,
             icon: image
         })
-        
+        this.state.markers.push(thisMarker)
         return thisMarker
     }
 
@@ -195,6 +194,10 @@ class GMap extends React.Component {
         })
     }
 
+    removeMarker() {
+        this.state.marker[0].setMap(null);
+    }
+
 
     render() {  
         return (
@@ -215,7 +218,7 @@ class GMap extends React.Component {
                     : null}
                 <SearchBar handleChange={this.handleChange.bind(this)} handleSearchSubmit={this.handleSearchSubmit.bind(this)} searchCity={this.state.searchCity} />
                 <button className="btn waves-effect waves-light z-zero" onClick={this.getUserLocation.bind(this)}>Use current Location</button>
-
+                    <MarkerModal removeMarker={this.removeMarker} marker={this.state.markers} />
             </div>
         )
     }
