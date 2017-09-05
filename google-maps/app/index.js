@@ -13,14 +13,12 @@ import { reducer } from './reducers';
 import App from './components/App';
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
-
+console.log(Provider)
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())}>
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={App} />
-      </Switch>
-    </BrowserRouter>
+      <App/>
   </Provider>
 
   , document.getElementById('ReactGMapsApp'));
+
+  
