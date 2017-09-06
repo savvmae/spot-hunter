@@ -26,8 +26,18 @@ class RegisterModal extends Component {
     }
 
     render() {
+        const customStyles = {
+            content: {
+                top: '50%',
+                left: '50%',
+                right: 'auto',
+                bottom: 'auto',
+                marginRight: '-50%',
+                transform: 'translate(-50%, -50%)'
+            }
+        };
         return (
-            <ReactModal header='register Header'
+            <ReactModal style={customStyles} header='register Header'
                 isOpen={this.props.state.showRegisterModal}
                 contentLabel="Minimal Modal Example">
                 <Button onClick={this.props.toggleRegister} floating icon='close' className='red' large style={{ top: '0px', left: '45%' }}/>

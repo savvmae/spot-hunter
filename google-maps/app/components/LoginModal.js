@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import ReactModal from 'react-modal';
 import { Row, Input, Link, Card, Col, Button, Icon } from 'react-materialize'
 
-import {toggleLogin, login} from '../actions';
+import { toggleLogin, login } from '../actions';
 
 class LoginModal extends Component {
     constructor() {
@@ -21,11 +21,21 @@ class LoginModal extends Component {
         this.props.login(this.state);
     }
     render() {
+        const customStyles = {
+            content: {
+                top: '50%',
+                left: '50%',
+                right: 'auto',
+                bottom: 'auto',
+                marginRight: '-50%',
+                transform: 'translate(-50%, -50%)'
+            }
+        };
         return (
-            <ReactModal header='login Header'
+            <ReactModal style={customStyles} header='login Header'
                 isOpen={this.props.state.showLoginModal}
                 contentLabel="Minimal Modal Example">
-                <Button onClick={this.props.toggleLogin} floating icon='close' className='red' large style={{ bottom: '0px', left: '45%' }}/>
+                <Button onClick={this.props.toggleLogin} floating icon='close' className='red' large style={{ bottom: '0px', left: '45%' }} />
                 <div className="container container-fifty">
                     <Col m={6} s={12}>
                         <Card>
@@ -57,7 +67,7 @@ class LoginModal extends Component {
                         </Card>
                     </Col>
                 </div>
-                
+
             </ReactModal>
         )
     }

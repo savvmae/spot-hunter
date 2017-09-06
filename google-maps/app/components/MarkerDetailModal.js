@@ -27,14 +27,27 @@ class MarkerDetailModal extends Component {
     }
     handleSubmit = (event) => {
         event.preventDefault();
-        let d
+        
         this.props.submitNewSpot(this.state);
     }
 
     render() {
+        const customStyles = {
+            overlay: {
+                backgroundColor: 'rgba(255, 255, 255)'
+            },
+            content: {
+                top: '75%',
+                left: '80%',
+                right: 'auto',
+                bottom: 'auto',
+                marginRight: '-50%',
+                transform: 'translate(-50%, -50%)'
+            }
+        };
         return (
             <div>
-                <ReactModal header='Marker Info Header'
+                <ReactModal style={customStyles} header='Marker Info Header'
                     isOpen={this.props.state.showMarkerDetailModal}
                     contentLabel="Minimal Modal Example">
                         <Button onClick={this.props.toggleMarkerDetailModal} floating icon='close' className='red' large style={{ bottom: '0px', left: '45%' }}/>

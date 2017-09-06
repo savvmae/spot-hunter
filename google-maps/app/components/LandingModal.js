@@ -25,9 +25,20 @@ class LandingModal extends Component {
 
 
     render() {
+        const customStyles = {
+            content: {
+                top: '50%',
+                left: '50%',
+                right: 'auto',
+                bottom: 'auto',
+                marginRight: '-50%',
+                transform: 'translate(-50%, -50%)'
+            }
+        };
         return (
             <div>
-                <ReactModal header='landing Header'
+            <h1> HELLO </h1>
+                <ReactModal style={customStyles} header='landing Header'
                     isOpen={this.props.state.showLandingModal}
                     contentLabel="Minimal Modal Example">
                     <p> Welcome to Free parking spot finder! You may continue anonymously, but with limited features. Or you can login/register below </p>

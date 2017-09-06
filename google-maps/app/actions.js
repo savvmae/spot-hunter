@@ -14,7 +14,8 @@ export const SET_LOCATION = "SET_LOCATION";
 export const TOGGLE_MARKER = "TOGGLE_MARKER";
 export const TOGGLE_MARKER_AND_SET_LOCATION = "TOGGLE_MARKER_AND_SET_LOCATION";
 export const TOGGLE_DETAIL_MARKER = "TOGGLE_DETAIL_MARKER";
-export const SPOT_DETAILS = "SPOT_DETAILS";
+export const NEW_MARKER = "NEW_MARKER";
+export const SET_MARKERS = "SET_MARKERS"
 
 
 
@@ -35,16 +36,8 @@ export function login(user) {
     }
 }
 
-export function dashboard(token) {
-    return (dispatch, getState) => {
-        token = token || getState().token;
-        if (!token) {
-            return;
-        }
-        return dashboardService(token).then(function (res) {
-            dispatch(setUser(res.data))
-        })
-    }
+export function dashboard() {
+    return { type: SET_MARKERS, spots}
 }
 
 export function searchCity(location) {
@@ -61,10 +54,7 @@ export function searchCity(location) {
 // }
 export function submitNewSpot(payload) {
     console.log(payload)
-    return (dispatch, getState) =>
-        dispatch(toggleMarkerModal())
-    // dispatch(toggleMarkerDetailModal())
-
+    return { type: NEW_MARKER, payload}
     // service looking good
     // return (dispatch, getState) => {
     //     return addSpotService(payload).then((res) => {
@@ -74,7 +64,6 @@ export function submitNewSpot(payload) {
     // })
     // }
     // return make new marker
-    // return { type: SPOT_DETAILS, payload }
 }
 export function setLocation(location) {
     return { type: SET_LOCATION, location }

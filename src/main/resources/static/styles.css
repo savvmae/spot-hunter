@@ -6,6 +6,7 @@ html, body {
   height: 100%;
   width: 100%;
   text-align: center;
+  background: #000;
 }
 
 .mapContainer {
@@ -44,4 +45,20 @@ html, body {
 }
 .small {
   font-size: 10px;
+}
+
+.margy-t {
+  margin-top: 50px;
+}
+
+.margy-r {
+  margin-right: 30px!important
+}
+
+.margy-a {
+  margin: auto!important
+}
+
+.fifty-w {
+  width: 50%!important 
 }

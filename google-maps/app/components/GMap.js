@@ -6,7 +6,7 @@ import MapStyles from './MapStyles';
 import Script from 'react-load-script';
 import PropTypes from 'prop-types';
 import SearchBar from './SearchBar';
-import MarkerModal from './MarkerModal';
+
 
 import { loading, searchCity, toggleMarkerModal } from '../actions';
 
@@ -15,19 +15,22 @@ class GMap extends React.Component {
         super(props);
         this.state = {
             center: null,
+            searchCityAuto: '',
             searchCity: '',
-            hasLoaded: true,
-            markers: []
+            hasLoaded: true
         };
         this.mapCenter.bind(this);
     }
+    componentWillMount() {
 
+    }
     loadMap() {
         const config = this.props.state;
         // create the map and markers after the component has
         // been rendered because we need to manipulate the DOM for Google =(
         this.map = this.createMap(config.initialCenter);
         if (config && config.markers) {
+
             this.markers = this.createMarkers(config.markers);
             if (config.legend) {
                 this.createLegend(config.icons);
@@ -62,12 +65,20 @@ class GMap extends React.Component {
             mapOptions.mapTypeId = 'terrain';
         }
         let map = new google.maps.Map(this.refs.mapCanvas, mapOptions);
-        map.setCenter(this.mapCenter(config.initialCenter.lat, config.initialCenter.lng)); 
+        map.setCenter(this.mapCenter(config.initialCenter.lat, config.initialCenter.lng));
         map.addListener('click', (e) => {
             this.setState({ lat: e.latLng.lat(), lng: e.latLng.lng() })
             let position = { lat: this.state.lat, lng: this.state.lng }
             this.props.toggleMarkerModal(position)
-            this.newMarker(position)
+            // need actual response for this promise to work
+            // .then(res => {
+            //     this.newMarker(position)
+            //     this.props.toggleMarkerModal()
+            //     google.maps.event.addListener(thisMarker, 'click', () => this.handleMarkerClick(thisMarker, marker.details));
+            // })
+            // need to render new marker only if button cicked is "yes" and submit comes back sucessful
+            // this.props.toggleMarkerModal()
+            // this.newMarker(position)
         })
         return map
     }
@@ -80,8 +91,8 @@ class GMap extends React.Component {
                 thisMarker = this.newMarker(marker.position, icon, marker.details);
             // have to define google maps event listeners here too
             // because we can't add listeners on the map until it's created
-                thisMarker.infoWindowIsOpen = false;
-                google.maps.event.addListener(thisMarker, 'click', () => this.handleMarkerClick(thisMarker, marker.details));
+            thisMarker.infoWindowIsOpen = false;
+            google.maps.event.addListener(thisMarker, 'click', () => this.handleMarkerClick(thisMarker, marker.details));
             return thisMarker;
         })
         return markersArray;
@@ -95,6 +106,8 @@ class GMap extends React.Component {
         navigator.geolocation.getCurrentPosition((position) => {
             this.props.loading();
             this.moveMap(position.coords.latitude, position.coords.longitude);
+            this.newMarker(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+            this.props.toggleMarkerModal()
         }, () => alert("Couldn't find your location"))
     }
 
@@ -128,9 +141,14 @@ class GMap extends React.Component {
         this.loadMap();
     }
 
+    deleteMarker = () => {
+        console.log('working')
+    }
+
     newInfoWindow(anchor, content) {
-        let contentString = 
-             `
+
+        let contentString =
+            `
                 <div>
                   <h6>Spot Details<h6>
                   <div class="small">
@@ -142,15 +160,19 @@ class GMap extends React.Component {
                   <div class="small">
                     Taken?: ${content.isSpotTaken}
                   </div>
+                  <button className="delete spot" onClick={this.deleteMarker}> Delete spot </button>
                 </div>
               `
-        
+
         anchor.infoWindow = new google.maps.InfoWindow({
             map: this.map,
             anchor: anchor,
             content: contentString
         })
-        google.maps.event.addListenerOnce(anchor.infoWindow, 'closeclick', () => anchor.infoWindowIsOpen = false);
+        console.log(anchor.infoWindow)
+        google.maps.event.addListenerOnce(anchor.infoWindow, 'click', () => 
+            console.log('i am deleting')
+        )
         return anchor.infoWindow;
     }
 
@@ -162,7 +184,7 @@ class GMap extends React.Component {
             animation: google.maps.Animation.DROP,
             icon: image
         })
-        this.state.markers.push(thisMarker)
+
         return thisMarker
     }
 
@@ -175,31 +197,55 @@ class GMap extends React.Component {
             center: this.mapCenter(lat, lng)
         });
         this.map.panTo(this.state.center);
-        if (!this.state.hasLoaded) {
-            let thisMarker = this.newMarker(this.state.center);
-            this.newInfoWindow(thisMarker, message);
+        // if (!this.state.hasLoaded) {
+        //     let thisMarker = this.newMarker(this.state.center);
+        //     this.newInfoWindow(thisMarker, message);
+        // }
+    }
+
+    handleChange = (e) => {
+        this.setState({ searchCity: e.target.value })
+        if (this.state.searchCity.length > 4) {
+            let searchBox = new google.maps.places.Autocomplete(e.target);
+            let that = this
+            let hasDownBeenPressed = false;
+
+            searchBox.addListener('keydown', (e) => {
+                if (e.keyCode === 40) {
+                    hasDownBeenPressed = true;
+                }
+            });
+            google.maps.event.addDomListener(e.target, 'keydown', (e) => {
+                e.cancelBubble = true;
+                if (e.keyCode === 13 || e.keyCode === 9) {
+                    if (!hasDownBeenPressed && !e.hasRanOnce) {
+                        google.maps.event.trigger(e.target, 'keydown', {
+                            keyCode: 40,
+                            hasRanOnce: true,
+                        });
+                    }
+                }
+            });
+            searchBox.addListener('focus', () => {
+                hasDownBeenPressed = false;
+                searchInput.value = '';
+            });
+
+            searchBox.addListener('place_changed', function () {
+                that.props.loading()
+                var places = searchBox.getPlace();
+                that.setState({ searchCity: places.formatted_address })
+                if (typeof places.address_components !== 'undefined') {
+                    hasDownBeenPressed = false;
+                }
+                that.props.searchCity(places.formatted_address).then(res => {
+                    that.moveMap(that.props.state.center.lat, that.props.state.center.lng);
+                    that.setState({ searchCity: '' })
+                })
+            })
         }
     }
-
-    handleChange(e) {
-        this.setState({ searchCity: e.target.value })
-    }
-
-    handleSearchSubmit(e) {
-        e.preventDefault();
-        this.props.loading();
-        this.props.searchCity(this.state.searchCity).then(res => {
-            this.moveMap(this.props.state.center.lat, this.props.state.center.lng);
-            this.setState({ searchCity: '' })
-        })
-    }
-
-    removeMarker() {
-        this.state.marker[0].setMap(null);
-    }
-
-
-    render() {  
+    render() {
         return (
             <div className="GMap">
                 <Script
@@ -212,13 +258,15 @@ class GMap extends React.Component {
                 {this.props.state.loading
                     ? <Row>
                         <Col s={12}>
-                            <ProgressBar />
+                            <div className="fifty-w margy-a">
+                                <ProgressBar />
+                            </div>
                         </Col>
                     </Row>
                     : null}
-                <SearchBar handleChange={this.handleChange.bind(this)} handleSearchSubmit={this.handleSearchSubmit.bind(this)} searchCity={this.state.searchCity} />
+                <SearchBar handleChange={this.handleChange.bind(this)} searchCity={this.state.searchCity} />
                 <button className="btn waves-effect waves-light z-zero" onClick={this.getUserLocation.bind(this)}>Use current Location</button>
-                    <MarkerModal removeMarker={this.removeMarker} marker={this.state.markers} />
+
             </div>
         )
     }
@@ -240,7 +288,7 @@ function mapDispatchToProps(dispatch) {
         },
         toggleMarkerModal: (position) => {
             return dispatch(toggleMarkerModal(position))
-        }
+        },
     }
 }
 
