@@ -5,4 +5,4 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/spotdb
     username: spotuser
-    password: spotpasss
+    password: spotpass
